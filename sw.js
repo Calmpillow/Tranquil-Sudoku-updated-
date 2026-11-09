@@ -1,0 +1,5 @@
+const CACHE='tranquil-sudoku-local-v3';
+const FILES=['./','./index.html','./manifest.webmanifest','./icon.svg','./themes/theme-01.svg','./themes/theme-02.svg','./themes/theme-03.svg','./themes/theme-04.svg','./themes/theme-05.svg','./themes/theme-06.svg','./themes/theme-07.svg','./themes/theme-08.svg','./themes/theme-09.svg','./themes/theme-10.svg','./themes/theme-11.svg','./themes/theme-12.svg','./themes/theme-13.svg','./themes/theme-14.svg','./themes/theme-15.svg','./themes/theme-16.svg','./themes/theme-17.svg','./themes/theme-18.svg','./themes/theme-19.svg','./themes/theme-20.svg');
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting())));
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});
